@@ -1,16 +1,26 @@
-# meals
+# Meals
 
-A new Flutter project.
+A Flutter recipe app with multiple screens, demonstrating core concepts of screen navigation.
+
+## Features
+- Browse a variety of recipes  
+- Multi-screen navigation  
+- Filter recipes based on dietary preferences  
+- Bookmark favorite meals  
 
 ## Getting Started
 
-This is a recipe app is a multi screen app and has a core concept os screen navigation.
+Follow these steps to set up and run the project:
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+# Clone the repository
+git clone https://github.com/your-username/meals.git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Navigate to the project directory
+cd meals
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Install dependencies
+flutter pub get
+
+# Run the app
+flutter run
