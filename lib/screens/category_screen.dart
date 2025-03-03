@@ -1,3 +1,4 @@
+//the main screen where all the categories are displayed
 import 'package:flutter/material.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/category.dart';

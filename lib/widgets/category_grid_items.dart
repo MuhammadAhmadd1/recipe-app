@@ -19,7 +19,7 @@ final void Function() onSelectCategory;
           borderRadius: BorderRadius.circular(14),
           gradient: LinearGradient(
             colors: [
-              category.color.withAlpha((0.55 * 255).toInt()),
+              category.color.withAlpha((0.55 * 255).toInt()),//for opacity
               category.color.withAlpha((0.9 * 255).toInt()),
             ],
             begin: Alignment.topLeft,

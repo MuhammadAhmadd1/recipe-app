@@ -1,3 +1,4 @@
+//basic structure of the meals
 enum Complexity {
   simple,
   challenging,

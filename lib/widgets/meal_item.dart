@@ -1,11 +1,21 @@
 //for outputting meal item data
 import 'package:flutter/material.dart';
 import 'package:meals/models/meal_structure.dart';
+import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItem extends StatelessWidget {
   const MealItem({super.key, required this.meal});
   final MealStructure meal;
+
+  String get complaxityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
+  }
+  String get affordabilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
+  }
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,6 +36,8 @@ class MealItem extends StatelessWidget {
               height: 200,
               width: double.infinity,
             ),
+            //the first widget will be the bottom most widget which is the image
+            //other widgets will be positioned on top of it
             Positioned(
               bottom: 0,
               left: 0,
@@ -50,7 +62,23 @@ class MealItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Row(
-                      children: [],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MealItemTrait(
+                          icon: Icons.schedule,
+                          lable: '${meal.duration} min',
+                        ),
+                        SizedBox(width: 12),
+                        MealItemTrait(
+                          icon: Icons.work,
+                          lable: '$complaxityText ',
+                        ),
+                        SizedBox(width: 12),
+                        MealItemTrait(
+                          icon: Icons.attach_money,
+                          lable: '$affordabilityText ',
+                        ),
+                      ],
                     )
                   ],
                 ),
