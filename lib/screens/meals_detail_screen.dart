@@ -11,11 +11,57 @@ class MealsDetailScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text(meal.title),
       ),
-      body: Image.network(
-        meal.imageUrl,
-        height: 300,
-        width: double.infinity,
-        fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Image.network(
+                meal.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Ingredients',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
+              ),
+              const SizedBox(height: 8),
+              for (final ingredient in meal.ingredients)
+                Text(
+                  ingredient,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Theme.of(context).colorScheme.onSurface),
+                ),
+              const SizedBox(height: 14),
+              Text(
+                'Instructions',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(color: Theme.of(context).colorScheme.primary),
+              ),
+              const SizedBox(height: 8),
+              for (final instructions in meal.steps)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Text(
+                    instructions,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                )
+            ],
+          ),
+        ),
       ),
     );
   }
