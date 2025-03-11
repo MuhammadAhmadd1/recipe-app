@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal_structure.dart';
 import 'package:meals/screens/category_screen.dart';
 import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/main_drawer.dart';
+
+const kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegetaraian: false,
+  Filter.nonveg: false,
+};
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -15,6 +23,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectPageIndex = 0;
   final List<MealStructure> _isFavourite = [];
+  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -24,14 +33,6 @@ class _TabsScreenState extends State<TabsScreen> {
         duration: Duration(seconds: 1),
       ),
     );
-  }
-
-  void _setScreen(String identifier) {
-    Navigator.of(context).pop();
-    if (identifier == 'filters') {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => FiltersScreen()));
-    }
   }
 
   void _toggleFavouriteMealStatus(MealStructure meal) {
@@ -55,10 +56,46 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreen(String identifier) async {
+    Navigator.of(context).pop();
+    if (identifier == 'filters') {
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+        MaterialPageRoute(
+          builder: (ctx) => FiltersScreen(
+            currentFilter: _selectedFilters,
+          ),
+        ),
+      );
+      setState(() {
+        _selectedFilters = result ?? kInitialFilters;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final availableMeals = dummyMeals.where((meal) {
+      //if I only want to show gluten-free meals & this meal is not
+      //gluten-free then retuen false
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetaraian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.nonveg]! && !meal.isNonVeg) {
+        return false;
+      }
+      //If the meals meet the statment above and are false
+      //then they will be true and executed
+      return true;
+    }).toList();
     Widget activePage = CategoryScreen(
       onToggelFavourite: _toggleFavouriteMealStatus,
+      availableFilteredMeals: availableMeals,
     );
     var activePageTitle = 'Category';
 

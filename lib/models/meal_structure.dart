@@ -24,7 +24,7 @@ class MealStructure {
     required this.affordability,
     required this.isGlutenFree,
     required this.isLactoseFree,
-    required this.isVegan,
+    required this.isNonVeg,
     required this.isVegetarian,
   });
 
@@ -39,6 +39,6 @@ class MealStructure {
   final Affordability affordability;
   final bool isGlutenFree;
   final bool isLactoseFree;
-  final bool isVegan;
+  final bool isNonVeg;
   final bool isVegetarian;
 }

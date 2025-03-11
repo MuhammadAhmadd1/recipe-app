@@ -52,9 +52,9 @@ class MealsScreen extends StatelessWidget {
                   .headlineLarge!
                   .copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             Text(
-              'No Meal Marked As Favorite',
+              'Nothing Here To Show',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
@@ -67,7 +67,6 @@ class MealsScreen extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(title!),
       ),
       body: content,
