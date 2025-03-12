@@ -6,13 +6,15 @@ import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/main_drawer.dart';
 
+// Initial filter settings with default values
 const kInitialFilters = {
   Filter.glutenFree: false,
   Filter.lactoseFree: false,
-  Filter.vegetaraian: false,
+  Filter.vegetaraian: false, // Typo in 'vegetarian'
   Filter.nonveg: false,
 };
 
+// Main screen that manages tabs and filtering
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
@@ -21,12 +23,13 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _selectPageIndex = 0;
-  final List<MealStructure> _isFavourite = [];
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
+  int _selectPageIndex = 0; // Tracks the currently selected tab index
+  final List<MealStructure> _isFavourite = []; // List of favorite meals
+  Map<Filter, bool> _selectedFilters = kInitialFilters; // Stores applied filters
 
+  // Function to show a snackbar message
   void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).clearSnackBars(); // Clear previous snackbars
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -35,6 +38,7 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
+  // Function to toggle meal favorite status
   void _toggleFavouriteMealStatus(MealStructure meal) {
     final isExisting = _isFavourite.contains(meal);
     if (isExisting) {
@@ -50,14 +54,16 @@ class _TabsScreenState extends State<TabsScreen> {
     }
   }
 
+  // Function to switch between tabs
   void selectPage(int index) {
     setState(() {
       _selectPageIndex = index;
     });
   }
 
+  // Function to navigate to another screen (e.g., Filters screen)
   void _setScreen(String identifier) async {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(); // Close drawer
     if (identifier == 'filters') {
       final result = await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
@@ -67,38 +73,42 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       );
       setState(() {
-        _selectedFilters = result ?? kInitialFilters;
+        _selectedFilters = result ?? kInitialFilters; // Update filters if available
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Filter meals based on selected filters
     final availableMeals = dummyMeals.where((meal) {
-      //if I only want to show gluten-free meals & this meal is not
-      //gluten-free then retuen false
+      // If gluten-free filter is enabled and meal is NOT gluten-free, exclude it
       if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
+      // If lactose-free filter is enabled and meal is NOT lactose-free, exclude it
       if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
         return false;
       }
+      // If vegetarian filter is enabled and meal is NOT vegetarian, exclude it
       if (_selectedFilters[Filter.vegetaraian]! && !meal.isVegetarian) {
         return false;
       }
+      // If non-veg filter is enabled and meal is NOT non-veg, exclude it
       if (_selectedFilters[Filter.nonveg]! && !meal.isNonVeg) {
         return false;
       }
-      //If the meals meet the statment above and are false
-      //then they will be true and executed
-      return true;
+      return true; // Otherwise, include the meal
     }).toList();
+
+    // Default active page is CategoryScreen
     Widget activePage = CategoryScreen(
       onToggelFavourite: _toggleFavouriteMealStatus,
       availableFilteredMeals: availableMeals,
     );
     var activePageTitle = 'Category';
 
+    // If the selected tab index is 1, switch to Favorites tab
     if (_selectPageIndex == 1) {
       activePage = MealsScreen(
         meal: _isFavourite,
@@ -106,21 +116,22 @@ class _TabsScreenState extends State<TabsScreen> {
       );
       activePageTitle = 'Favorite';
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
       body: activePage,
       drawer: MainDrawer(
-        onSelectScreen: _setScreen,
+        onSelectScreen: _setScreen, // Opens filter screen when selected
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: selectPage,
-        currentIndex: _selectPageIndex,
+        onTap: selectPage, // Switches between tabs
+        currentIndex: _selectPageIndex, // Highlights selected tab
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.category), label: 'Category'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorite'),
+              icon: Icon(Icons.category), label: 'Category'), // Category tab
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorite'), // Favorite tab
         ],
       ),
     );

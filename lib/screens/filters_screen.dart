@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+// Enum representing different filter options
 enum Filter { glutenFree, lactoseFree, vegetaraian, nonveg }
 
+// Stateful widget to manage filters screen
 class FiltersScreen extends StatefulWidget {
   const FiltersScreen({super.key, required this.currentFilter});
+
+  // Map to store the current filter settings passed from the parent widget
   final Map<Filter, bool> currentFilter;
 
   @override
@@ -11,6 +15,7 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
+  // Variables to hold the state of each filter switch
   var _glutenFreeFilterSet = false;
   var _lactoseFreeFilterSet = false;
   var _vegetaraianFilterSet = false;
@@ -19,6 +24,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize the switch states from the passed current filter settings
     _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
     _lactoseFreeFilterSet = widget.currentFilter[Filter.lactoseFree]!;
     _vegetaraianFilterSet = widget.currentFilter[Filter.vegetaraian]!;
@@ -31,23 +37,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         title: Text('Filters'),
       ),
-      //  drawer: MainDrawer(
-      //  onSelectScreen: (identifier) {
-      //  Navigator.of(context).pop();
-      //if (identifier == 'meals') {
-      //Navigator.of(context).push(
-      //MaterialPageRoute(
-      //builder: (ctx) => TabsScreen(),
-      //),
-      //);
-      //}
-      //},
-      //),
-      //filter switches to turn filters on and off
+      // PopScope prevents accidental back navigation without saving filters
       body: PopScope(
-        canPop: false,
+        canPop: false, // Disables default back navigation
         onPopInvokedWithResult: (bool didPop, dynamic result) {
-          if (didPop) return;
+          if (didPop) return; // If user has already popped, return early
+          
+          // Pass updated filter settings back when navigating away
           Navigator.of(context).pop({
             Filter.glutenFree: _glutenFreeFilterSet,
             Filter.lactoseFree: _lactoseFreeFilterSet,
@@ -57,6 +53,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
         },
         child: Column(
           children: [
+            // Switch to enable or disable Gluten-free filter
             SwitchListTile(
               value: _glutenFreeFilterSet,
               onChanged: (isChecked) {
@@ -79,6 +76,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
               activeColor: Colors.green,
               contentPadding: EdgeInsets.only(left: 34, right: 22),
             ),
+
+            // Switch to enable or disable Lactose-free filter
             SwitchListTile(
               value: _lactoseFreeFilterSet,
               onChanged: (isChecked) {
@@ -101,6 +100,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
               activeColor: Colors.green,
               contentPadding: EdgeInsets.only(left: 34, right: 22),
             ),
+
+            // Switch to enable or disable Vegetarian filter (contains a typo)
             SwitchListTile(
               value: _vegetaraianFilterSet,
               onChanged: (isChecked) {
@@ -109,13 +110,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 });
               },
               title: Text(
-                'Vegtaraian',
+                'Vegetarian', // Fixed spelling mistake
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
               subtitle: Text(
-                'Only Include Vegtaraian Meals',
+                'Only Include Vegetarian Meals', // Fixed spelling mistake
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -123,6 +124,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
               activeColor: Colors.green,
               contentPadding: EdgeInsets.only(left: 34, right: 22),
             ),
+
+            // Switch to enable or disable Non-Vegetarian filter
             SwitchListTile(
               value: _nonVegFilterSet,
               onChanged: (isChecked) {
@@ -131,13 +134,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 });
               },
               title: Text(
-                'Non-Vegetaraian',
+                'Non-Vegetarian', // Fixed spelling mistake
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
               ),
               subtitle: Text(
-                'Only Include Non-Vegetaraian Meals',
+                'Only Include Non-Vegetarian Meals', // Fixed spelling mistake
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
