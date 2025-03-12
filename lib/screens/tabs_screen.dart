@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meals/data/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal_structure.dart';
+import 'package:meals/provider/meals_provider.dart';
 import 'package:meals/screens/category_screen.dart';
 import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
@@ -15,17 +16,18 @@ const kInitialFilters = {
 };
 
 // Main screen that manages tabs and filtering
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectPageIndex = 0; // Tracks the currently selected tab index
   final List<MealStructure> _isFavourite = []; // List of favorite meals
-  Map<Filter, bool> _selectedFilters = kInitialFilters; // Stores applied filters
+  Map<Filter, bool> _selectedFilters =
+      kInitialFilters; // Stores applied filters
 
   // Function to show a snackbar message
   void _showInfoMessage(String message) {
@@ -73,15 +75,19 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       );
       setState(() {
-        _selectedFilters = result ?? kInitialFilters; // Update filters if available
+        _selectedFilters =
+            result ?? kInitialFilters; // Update filters if available
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    //makes sure that our Build method executes again as our data changes
+   final meals =  ref.watch(mealsProvider);
+
     // Filter meals based on selected filters
-    final availableMeals = dummyMeals.where((meal) {
+    final availableMeals = meals.where((meal) {
       // If gluten-free filter is enabled and meal is NOT gluten-free, exclude it
       if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
@@ -131,7 +137,8 @@ class _TabsScreenState extends State<TabsScreen> {
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.category), label: 'Category'), // Category tab
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorite'), // Favorite tab
+          BottomNavigationBarItem(
+              icon: Icon(Icons.star), label: 'Favorite'), // Favorite tab
         ],
       ),
     );

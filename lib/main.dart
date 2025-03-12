@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals/screens/tabs_screen.dart';
 
@@ -12,7 +13,12 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const App());
+// wraping the app with provider to unlock behind the scene state management functionality
+  runApp(
+    ProviderScope(
+      child: const App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
