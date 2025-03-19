@@ -10,13 +10,10 @@ class MealsScreen extends StatelessWidget {
     super.key,
     this.title,
     required this.meal,
-    required this.onToggelFavourite,
   });
 
   final String? title; // Optional title of the screen (used in the AppBar)
   final List<MealStructure> meal; // List of meals to display
-  final void Function(MealStructure meal)
-      onToggelFavourite; // Function to toggle favorite meals
 
   // Method to navigate to the meal details screen
   void _selectMealScreen(BuildContext context, MealStructure meal) {
@@ -24,8 +21,6 @@ class MealsScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => MealsDetailScreen(
           meal: meal,
-          onToggelFavourite:
-              onToggelFavourite, // Pass the favorite toggle function
         ),
       ),
     );

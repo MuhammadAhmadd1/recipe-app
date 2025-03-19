@@ -8,11 +8,9 @@ import 'package:meals/widgets/category_grid_items.dart'; // Importing the widget
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({
     super.key,
-    required this.onToggelFavourite, // Function to handle toggling a meal as a favorite.
     required this.availableFilteredMeals, // List of meals available after applying filters.
   });
 
-  final void Function(MealStructure meal) onToggelFavourite; // Callback function to toggle favorites.
   final List<MealStructure> availableFilteredMeals; // Filtered list of meals.
 
   // Function to navigate to the MealsScreen when a category is selected.
@@ -28,7 +26,6 @@ class CategoryScreen extends StatelessWidget {
         builder: (ctx) => MealsScreen(
           title: category.title, // Passing the category title as the screen title.
           meal: filteredMealList, // Passing the filtered meal list.
-          onToggelFavourite: onToggelFavourite, // Passing the favorite toggle function.
         ),
       ),
     );

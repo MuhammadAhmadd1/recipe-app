@@ -1,31 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal_structure.dart';
+import 'package:meals/provider/favorites_provider.dart';
 
 // This widget displays the details of a meal.
-class MealsDetailScreen extends StatelessWidget {
+class MealsDetailScreen extends ConsumerWidget {
   const MealsDetailScreen({
     super.key,
     required this.meal,
-    required this.onToggelFavourite,
   });
 
   // The meal whose details will be displayed.
   final MealStructure meal;
 
-  // Function to toggle the meal as favorite.
-  final void Function(MealStructure meal) onToggelFavourite;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favMeal = ref.watch(favoriteMealsProvider);
+    final isFavourite = favMeal.contains(meal);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title), // Display the meal title in the app bar.
         actions: [
           IconButton(
             onPressed: () {
-              onToggelFavourite(meal); // Call the function to toggle favorite.
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavouriteStatus(meal);
+              ScaffoldMessenger.of(context)
+                  .clearSnackBars(); // Clear previous snackbars
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(wasAdded
+                      ? 'Marked As Favourite!'
+                      : 'UnMarked As Favourite!'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
             },
-            icon: Icon(Icons.star), // Star icon for marking favorite.
+            icon: Icon(
+              isFavourite ? Icons.star : Icons.star_border,
+            ), // Star icon for marking favorite.
           ),
         ],
       ),
