@@ -43,13 +43,16 @@ class MealItem extends StatelessWidget {
         child: Stack(
           children: [
             // Fade-in effect when loading an image
-            FadeInImage(
-              placeholder: MemoryImage(
-                  kTransparentImage), // Transparent placeholder while loading
-              image: NetworkImage(meal.imageUrl), // Load image from the URL
-              fit: BoxFit.cover, // Ensure the image covers the space properly
-              height: 200,
-              width: double.infinity, // Expand to full width
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(
+                    kTransparentImage), // Transparent placeholder while loading
+                image: NetworkImage(meal.imageUrl), // Load image from the URL
+                fit: BoxFit.cover, // Ensure the image covers the space properly
+                height: 200,
+                width: double.infinity, // Expand to full width
+              ),
             ),
 
             // Overlay a semi-transparent container at the bottom
